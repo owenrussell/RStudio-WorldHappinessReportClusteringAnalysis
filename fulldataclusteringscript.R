@@ -1,7 +1,7 @@
 # Cluster Analysis full dataset
 #install.packages("rlang")
 library(readxl)
-mydata <- read_excel("C:/Users/owenr/OneDrive/Desktop/2017grefined3.xlsx")
+mydata <- read_excel("C:/Users/owenr/OneDrive/Desktop/2017grefined4.xlsx")
 mydata$Happiness.Rank <- NULL
 mydata$Whisker.high <- NULL
 mydata$Whisker.low <- NULL
@@ -102,7 +102,7 @@ plot(1:10, betweenss_totss, type = "b",
      ylab = "Between SS / Total SS", xlab = "Clusters (k)")
 
 
-# MODEL-BASED CLUSTERING ----
+# MODEL-BASED CLUSTERING ---- does loads of stuff
 library(mclust)
 fitM <- Mclust(nor)
 plot(fitM)
@@ -125,3 +125,4 @@ library(fpc)
 library(scales)
 # Cluster visualization
 #fviz_cluster(fitDbscan, nor, geom = "point")
+
