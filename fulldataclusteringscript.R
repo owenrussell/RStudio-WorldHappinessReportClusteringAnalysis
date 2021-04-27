@@ -32,20 +32,19 @@ nor = scale(z,center=means,scale=sds)
 
 #calculate distance matrix (default is Euclidean distance)
 distance = dist(nor)
-
-# Hierarchical agglomerative clustering using default complete linkage 
-mydata.hclust = hclust(distance, method = "complete")
-#plot(mydata.hclust)
-#plot(mydata.hclust, labels=mydata$Country, main ='Default from hclust')
-plot(mydata.hclust,hang=-1)
+distance
+par(mfrow=(c(1,1)))
+# Hierarchical agglomerative clustering using "single" linkage 
+mydata.hclustsgl <- hclust(distance,method="single")
+plot(mydata.hclustsgl ,labels = FALSE, hang=-1, main = "Single linkage")
 
 # Hierarchical agglomerative clustering using "average" linkage 
 mydata.hclustavg <- hclust(distance,method="average")
-plot(mydata.hclustavg ,hang=-1)
+plot(mydata.hclustavg , labels = FALSE, hang=-1, main = "Average linkage")
 
-# Hierarchical agglomerative clustering using "single" linkage 
-mydata.hclustsgl <- hclust(distance,method="single")
-plot(mydata.hclustsgl ,hang=-1)
+# Hierarchical agglomerative clustering using default complete linkage 
+mydata.hclust = hclust(distance, method = "complete")
+plot(mydata.hclust, labels = FALSE, hang=-1, main = "Complete linkage")
 
 # Cluster membership, guessing 3 clusters
 member = cutree(mydata.hclust,3)
@@ -56,7 +55,7 @@ aggregate(mydata[,-c(1,1)],list(member),mean)
 
 # Silhouette Plot
 library(cluster) 
-plot(silhouette(cutree(mydata.hclust,3), distance)) 
+plot(silhouette(cutree(mydata.hclust,3), distance, title = "membership"))
 
 # K-means clustering, nstart runs in n times to get optimal
 set.seed(123)
@@ -87,7 +86,7 @@ NbClust(nor, method = "kmeans")
   #geom_vline(xintercept = 4, linetype = 2) + # add line for better visualisation
   #labs(subtitle = "Elbow method") # add subtitles
 
-par(mfrow=c(1,1))
+par(mfrow=c(1,2))
 #plotting k means assigned clusters by colour on graph
 plot(GDPperCapita ~ LifeExpectancy, col = kc$cluster)
 plot(Freedom ~ LifeExpectancy , col = kc$cluster)
@@ -102,7 +101,7 @@ plot(1:10, betweenss_totss, type = "b",
      ylab = "Between SS / Total SS", xlab = "Clusters (k)")
 
 
-# MODEL-BASED CLUSTERING ---- does loads of stuff
+# MODEL-BASED CLUSTERING ----
 library(mclust)
 fitM <- Mclust(nor)
 plot(fitM)
@@ -125,4 +124,3 @@ library(fpc)
 library(scales)
 # Cluster visualization
 #fviz_cluster(fitDbscan, nor, geom = "point")
-
